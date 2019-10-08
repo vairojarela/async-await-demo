@@ -3,13 +3,12 @@ const posts = [
     { title: "Post Two", body: "This is post two" }
 ];
 
-
 function getPosts() {
     setTimeout(() => {
-        let output = '';
+        let output = "";
         posts.forEach((post, index) => {
-            output += `<li>${post.title}</li>`
-        })
+            output += `<li>${post.title}</li>`;
+        });
         document.body.innerHTML = output;
     }, 1000);
 }
@@ -17,46 +16,54 @@ function getPosts() {
 function createPost(post) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
+            posts.push(post);
+
             const error = false;
+
             if (!error) {
-                posts.push(post);
                 resolve();
+            } else {
+                reject("Error: Something went wrong");
             }
-            else {
-                reject('Error: Oh no');
-            }
-        }, 3000)
-    })
-}
-/*
-createPost({
-    title: 'Post Three', body: 'This is Post Three'
-}).then(getPosts) */
-
-
-async function init() {
-    await createPost({
-        title: 'Post Three', body: 'This is Post Three'
+        }, 2000);
     });
-    getPosts();
 }
 
-init();
+// createPost({ title: 'Post Three', body: 'This is post three' })
+//   .then(getPosts)
+//   .catch(err => console.log(err));
 
-function filtered_id(obj) {
-    delete obj['email', 'name', 'address', 'company', 'website'];
-    return obj.id === 1 || obj.id === 2;
+// Async / Await
+// async function init() {
+//   await createPost({ title: 'Post Three', body: 'This is post three' });
+
+//   getPosts();
+// }
+
+// init();
+
+// Asunc / Await / Fetch
+async function fetchUsers() {
+    const res = await fetch("https://jsonplaceholder.typicode.com/users");
+
+    const data = await res.json();
+
+    console.log(data);
 }
 
+fetchUsers();
 
-async function getUsers() {
-    let res = await fetch('https://jsonplaceholder.typicode.com/users');
-    let data = await res.json();
-    let modUser = data.filter(filtered_id)
-    console.log(modUser)
+  // Promise.all
+  // const promise1 = Promise.resolve('Hello World');
+  // const promise2 = 10;
+  // const promise3 = new Promise((resolve, reject) =>
+  //   setTimeout(resolve, 2000, 'Goodbye')
+  // );
+  // const promise4 = fetch('https://jsonplaceholder.typicode.com/users').then(res =>
+  //   res.json()
+  // );
 
-    return data;
-}
+  // Promise.all([promise1, promise2, promise3, promise4]).then(values =>
+  //   console.log(values)
+  // );
 
-
-getUsers();
